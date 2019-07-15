@@ -13,7 +13,9 @@ project "Crane"
     files
     {
         "src/**.h",
-        "src/**.cpp"
+        "src/**.cpp",
+        "vendor/glm/glm/**.hpp",
+        "vendor/glm/glm/**.inl"
     }
 
     defines
@@ -24,11 +26,48 @@ project "Crane"
     includedirs
     {
         "src",
-        "vendor/spdlog/include"
+        "vendor/spdlog/include",
+        "vendor/glfw/include",
+        "vendor/glad/include",
+        "vendor/imgui",
+        "vendor/glm"
     }
 
     filter "system:windows"
         systemversion "latest"
+
+        defines
+        {
+            "CRANE_PLATFORM_WINDOWS",
+            "CRANE_BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
+        }
+
+        links
+        {
+            "GLFW",
+            "Glad",
+            "ImGui",
+            "opengl32.lib"
+        }
+
+    filter "system:linux"
+        systemversion "latest"
+
+        defines
+        {
+            "CRANE_PLATFORM_LINUX",
+            "GLFW_INCLUDE_NONE"
+        }
+
+        links
+        {
+            "GLFW",
+            "Glad",
+            "ImGui",
+            "GL",
+            "X11"
+        }
 
     filter "configurations:Debug"
         defines "CRANE_DEBUG"
